@@ -25,7 +25,7 @@ const baseUrl = 'http://localhost:1000/legacyCodeAnalyser/analyse';
 
 //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
 
-const predictionurl = 'http://127.0.0.1:5000/churn';//?id=1
+const predictionurl = 'http://127.0.0.1:5000/churn?id=84844';//?id=1
 
 const localDashboarCountriesDataUrl = 'http://localhost:8080/insurer/data/countries';
 
@@ -55,14 +55,14 @@ export class InsurerDetailService {
   }
   
   getExpiringPolicies(days: number): Observable<Policy[]>{
-    console.info("getting prediction");
+    console.info("getting expiring policies");
     const headers = { 'content-type': 'application/json' }
-    return this.http.get<Policy[]>(predictionurl+days, {'headers': headers});
+    return this.http.get<Policy[]>(localDashboardExpiringPoliciesURL+days, {'headers': headers});
   }
 
   getPrediction(systemId: number): Observable<any>{
     console.info("getting prediction");
     const headers = { 'content-type': 'application/json' }
-    return this.http.get<any>(localDashboardExpiringPoliciesURL+'?id=${systemId}', {'headers': headers});
+    return this.http.get<any>(predictionurl, {'headers': headers});
   }
 }

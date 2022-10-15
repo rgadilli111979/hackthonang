@@ -317,7 +317,7 @@
       </div>
 
     </td>
-    <td width="33%">
+    <!-- <td width="33%">
       <div id="syncChart">
         <tr>
           <apx-chart 
@@ -350,7 +350,7 @@
         
       </div>
 
-    </td>
+    </td> -->
 
   </table>
   
@@ -365,16 +365,29 @@
     <select id="pType" class="dd">
       <option *ngFor="let insuranceType of this.insuranceTypes">{{insuranceType}}</option>
     </select>
+   
   </div>
-
-  <table class="table" align="center">
-    <tr class="head">Policies</tr>
-    <tr *ngFor="let item of this.data">
-      <td class="cell">{{item}}</td>
-
+ 
+  <table  align="center" class="table" width="100%">
+    <tr class="head" align="center">Policies</tr>
+    <tr border="2%" bgcolor="#ffe0b2">
+      <th>Policy Number</th>
+        <th>Customer ID</th>
+        <th>Insurance Type</th>
+        <th>Premium Amount</th>
+        <th>Policy Effective Date</th>
+        <th>Policy Expiration Date</th>
+      </tr>
+    <tr *ngFor="let item of this.policyList" (click)="getPrediction(item.policyNumber)">
+      <td class="cell">{{item.policyNumber}}</td>
+      <td class="cell">{{item.customerId}}</td>
+      <td class="cell">{{item.insuranceType}}</td>
+      <td class="cell">{{item.premiumAmount}}</td>
+      <td class="cell">{{item.policyEffectiveDate}}</td>
+      <td class="cell">{{item.policyExpirationDate}}</td>
+     
     </tr>
   </table>
-
 
 
 

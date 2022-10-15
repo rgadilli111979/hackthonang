@@ -4,7 +4,7 @@
     margin: 350px;
 }
 .table{
-    width:40%;;
+    width:100%;;
     color: rgb(67, 116, 117);
    grid-row: span;
    border:"10%";
@@ -19,6 +19,7 @@
     
 }
 .head{
+    align-items: center;
     font-weight: bold;
     color: rgb(32, 128, 212);
     font-family: Halvetica;
@@ -26,7 +27,7 @@
     text-align: center;
 }
 .filters{
-    width:40%;
+    width:100%;
     background-color: rgba(75, 141, 199, 0.705);
     /* border-top: 5px;
     border-bottom: 5px;

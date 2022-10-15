@@ -25,13 +25,15 @@ const baseUrl = 'http://localhost:1000/legacyCodeAnalyser/analyse';
 
 //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
 
-const predictionurl = 'http://127.0.0.1:5000/churn?id=1';//?id=1
+const predictionurl = 'http://127.0.0.1:5000/churn';//?id=1
 
 const localDashboarCountriesDataUrl = 'http://localhost:8080/insurer/data/countries';
 
 const localDashboarInsurerDataUrl = 'http://localhost:8080/insurer/data/companies';
 
 const localDashboardPolicyDataUrl = 'http://localhost:8080/insurer/data/getPolicyDetails';
+
+const localDashboardExpiringPoliciesURL ='http://localhost:8080/insurer/data/expiringSoon/';
 
 @Injectable({
   providedIn: 'root'
@@ -52,4 +54,15 @@ export class InsurerDetailService {
     return this.http.get<Policy[]>(localDashboardPolicyDataUrl, {'headers': headers});
   }
   
+  getExpiringPolicies(days: number): Observable<Policy[]>{
+    console.info("getting prediction");
+    const headers = { 'content-type': 'application/json' }
+    return this.http.get<Policy[]>(predictionurl+days, {'headers': headers});
+  }
+
+  getPrediction(systemId: number): Observable<any>{
+    console.info("getting prediction");
+    const headers = { 'content-type': 'application/json' }
+    return this.http.get<any>(localDashboardExpiringPoliciesURL+'?id=${systemId}', {'headers': headers});
+  }
 }

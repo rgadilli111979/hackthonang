@@ -1,6 +1,6 @@
 Please follow below commands to install change node to latest version
 1. npm cache clean -f
-2. npm install -g n
+2. sudo npm install -g n
 3. sudo n stable
 
 Use below command to install angular:

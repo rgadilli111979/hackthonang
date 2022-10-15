@@ -35,6 +35,8 @@ const localDashboardPolicyDataUrl = 'http://localhost:8080/insurer/data/getPolic
 
 const localDashboardExpiringPoliciesURL ='http://localhost:8080/insurer/data/expiringSoon/';
 
+const localDashboardPieChartDataURL = 'http://localhost:8080/insurer/data/getPieChartInfoForInsuranceType';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -64,5 +66,9 @@ export class InsurerDetailService {
     console.info("getting prediction");
     const headers = { 'content-type': 'application/json' }
     return this.http.get<any>(predictionurl, {'headers': headers});
+  }
+  getPieChartInfoForInsuranceType(): Observable<any>{
+    const headers = { 'content-type': 'application/json' }
+    return this.http.get<any>(localDashboardPieChartDataURL, {'headers': headers});
   }
 }

@@ -54,10 +54,12 @@ export class AppComponent {
   expInOneMonthPolicies!: Policy[];
   expInTwoMonthPolicies!: Policy[];
   expInThreeMonthPolicies!: Policy[];
-  barChartDataList: number[] = new Array(0,0,0,0,0);
+  barChartDataList: number[] = new Array(0,0,0,0,0,0);
   expiringPoliciesCount: number[] = new Array();
   systemId!: number;
   prediction!: boolean;
+  pieChartKeys!: string[];
+  pieChartValues!: any[];
 
   countriesList!:Country[];
   constructor(private insurerDataSer: InsurerDetailService, private cd : ChangeDetectorRef){
@@ -79,50 +81,60 @@ export class AppComponent {
       
     })
 
-    this.insurerDataSer.getExpiringPolicies(7).subscribe(res => {
-      this.expInOneWeekPolicies = res;
-      this.barChartDataList[0]=res.length;
-      console.info(this.expInOneWeekPolicies);
-      console.info("count of policies exp in 7 days")
-      console.info(this.barChartDataList[0]);
-    })
+    // this.insurerDataSer.getExpiringPolicies(7).subscribe(res => {
+    //   var policies:Policy[] = res;
+    //   this.expInOneWeekPolicies = policies;
+    //   this.barChartDataList[0]=policies.length;
+    //   console.info(this.expInOneWeekPolicies);
+    //   console.info("count of policies exp in 7 days")
+    //   console.info(this.barChartDataList[0]);
+    // })
 
-    this.insurerDataSer.getExpiringPolicies(14).subscribe(res => {
-      this.expInTwoWeekPolicies = res;
-      this.barChartDataList[1]=res.length;
-      console.info(this.expInTwoWeekPolicies);
-    })
+    // this.insurerDataSer.getExpiringPolicies(14).subscribe(res => {
+    //   var policies:Policy[] = res;
+    //   this.expInTwoWeekPolicies = policies;
+    //   this.barChartDataList[1]=policies.length;
+    //   console.info(this.expInTwoWeekPolicies);
+    // })
 
-    this.insurerDataSer.getExpiringPolicies(21).subscribe(res => {
-      this.expInThreeWeekPolicies = res;
-      this.barChartDataList[2]=res.length;
-      console.info(this.expInThreeWeekPolicies);
-    })
+    // this.insurerDataSer.getExpiringPolicies(21).subscribe(res => {
+    //   var policies:Policy[] = res;
+    //   this.expInThreeWeekPolicies = policies;
+    //  this.barChartDataList[2]=policies.length;
+    //   console.info(this.expInThreeWeekPolicies);
+    // })
 
-    this.insurerDataSer.getExpiringPolicies(30).subscribe(res => {
-      this.expInOneMonthPolicies = res;
-      this.barChartDataList[3]=res.length;
-      console.info(this.expInOneMonthPolicies);
-    })
+    // this.insurerDataSer.getExpiringPolicies(30).subscribe(res => {
+    //   var policies:Policy[] = res;
+    //   this.expInOneMonthPolicies = policies;
+    //   this.barChartDataList[3]=policies.length;
+    //   console.info(this.expInOneMonthPolicies);
+    // })
 
-    this.insurerDataSer.getExpiringPolicies(60).subscribe(res => {
-      this.expInTwoMonthPolicies = res;
-      this.barChartDataList[4]=res.length;
-      console.info(this.expInTwoMonthPolicies);
-    })
+    // this.insurerDataSer.getExpiringPolicies(60).subscribe(res => {
+    //   var policies:Policy[] = res;
+    //   this.expInTwoMonthPolicies = policies;
+    //   this.barChartDataList[4]=policies.length;
+    //   console.info(this.expInTwoMonthPolicies);
+    // })
 
-    this.insurerDataSer.getExpiringPolicies(90).subscribe(res => {
-      this.expInThreeMonthPolicies = res;
-      this.barChartDataList[5]=res.length;
-      console.info(this.expInThreeMonthPolicies);
-      console.log("expiringPoliciesCount: "+this.barChartDataList);
-      this.updateSeries();
-    })
+    // this.insurerDataSer.getExpiringPolicies(90).subscribe(res => {
+    //   var policies:Policy[] = res;
+    //   this.expInThreeMonthPolicies = policies;
+    //   this.barChartDataList[5]=policies.length;
+    //   console.info(this.expInThreeMonthPolicies);
+    //   this.updateSeries();
+    // })
 
     this.insurerDataSer.getListOfPolicies().subscribe(res => {
       this.policyList = res;
     })
-    
+    this.insurerDataSer.getPieChartInfoForInsuranceType().subscribe(res => {
+      console.log("PieChart Data: "+res);
+      this.pieChartKeys = Object.keys(res);
+      this.pieChartValues = Object.values(res);
+    })
+
    var bool =0;
    if(bool==0){
     Swal.fire('error!', 'Oops!', 'error');
@@ -328,9 +340,20 @@ export class AppComponent {
     //   max: 100,
     // });
     
+      // this.barChartDataList[0]=this.expInOneWeekPolicies.length;
+      // this.barChartDataList[1]=this.expInTwoWeekPolicies.length;
+      // this.barChartDataList[2]=this.expInThreeWeekPolicies.length;
+      // this.barChartDataList[3]=this.expInOneMonthPolicies.length;
+      // this.barChartDataList[4]=this.expInTwoMonthPolicies.length;
+      // this.barChartDataList[5]=this.expInThreeMonthPolicies.length;
+    
     console.info("updating chart data");
     this.barChartOptions.series.data = this.barChartDataList;
     console.log(this.barChartOptions.series.data);
+
+
+    this.pieChartOptions.labels = this.pieChartKeys;
+    this.pieChartOptions.series = this.pieChartValues;
     
   }
   

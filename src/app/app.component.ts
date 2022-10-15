@@ -14,6 +14,8 @@ import { ApexNonAxisChartSeries,
          ApexTooltip,
          ApexStroke } from 'ng-apexcharts';
 import { InsurerName } from './model/insurer-name';
+import { InsurerDetailService } from './service/data.service';
+import { Country } from './model/countries.model';
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
@@ -41,7 +43,15 @@ export class AppComponent {
   insurers: string[] = new Array('ACE Europe', 'Aditya Birla Sun Life Insurance', 'CAA Insurance', 'Industrial Alliance', 'PC Insurance');
   insuranceTypes: string[] = new Array('Home Insurance', 'Life Insurance', 'Health Insurance','Vehicel Insurance')
   insurerNameList!: InsurerName[]
-  constructor(){
+
+  countriesList!:Country[];
+  constructor(private insurerDataSer: InsurerDetailService){
+   
+    this.insurerDataSer.getListOfCountries ().subscribe(res => {
+      this.countriesList = res;
+      console.info(this.countriesList);
+    });
+
     this.data.push(99900110001);
     this.data.push(99900120012);
     this.data.push(11100110001);

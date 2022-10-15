@@ -21,7 +21,9 @@ const baseUrl = 'http://localhost:1000/legacyCodeAnalyser/analyse';
 // const analysis = 'http://localhost:1000/legacyCodeAnalyser/analyse/';
 
 // const storeAnalysis = 'http://localhost:1001/legacyCodeAnalysisStore/analyse/';
+
 //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
+
 const predictionurl = 'http://127.0.0.1:5000/churn';//?id=1
 
 const localDashboarCountriesDataUrl = 'http://localhost:8080/insurer/data/countries';

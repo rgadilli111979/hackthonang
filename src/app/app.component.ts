@@ -16,6 +16,8 @@ import { ApexNonAxisChartSeries,
 import { InsurerName } from './model/insurer-name';
 import { InsurerDetailService } from './service/data.service';
 import { Country } from './model/countries.model';
+import Swal from 'sweetalert2';
+import { Policy } from './model/policy';
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
@@ -39,10 +41,13 @@ export class AppComponent {
   public pieChartOptions!: Partial<ChartOptions> | any;
   public barChartOptions!: Partial<ChartOptions> | any;
   public synchronizedChartOptions: Partial<ChartOptions> | any;
-  countries: string[] = new Array('Australia', 'Canada', 'Cayman Islands', 'India', 'United Kingdom', 'USA');
+  public falseCasesOptions: Partial<ChartOptions> | any;
+  public trueCasesOptions: Partial<ChartOptions> | any;
+  countries: string[] = new Array();
   insurers: string[] = new Array('ACE Europe', 'Aditya Birla Sun Life Insurance', 'CAA Insurance', 'Industrial Alliance', 'PC Insurance');
   insuranceTypes: string[] = new Array('Home Insurance', 'Life Insurance', 'Health Insurance','Vehicel Insurance')
-  insurerNameList!: InsurerName[]
+  insurerNameList!: InsurerName[];
+  policyList!: Policy[];
 
   countriesList!:Country[];
   constructor(private insurerDataSer: InsurerDetailService){
@@ -50,7 +55,27 @@ export class AppComponent {
     this.insurerDataSer.getListOfCountries ().subscribe(res => {
       this.countriesList = res;
       console.info(this.countriesList);
+      this.countriesList.forEach(country =>{
+        this.countries.push(country.countryName);
+      }
+        )
+
     });
+
+    this.insurerDataSer.getListOfPolicies().subscribe(res => {
+      this.policyList = res;
+      console.info(this.policyList[0]);
+    })
+
+   var bool =0;
+   if(bool==0){
+    Swal.fire('error!', 'Oops!', 'error');
+    bool=1;
+   }
+    if(bool==1){
+      Swal.fire('success!', 'Hey There!', 'success');
+    }
+    
 
     this.data.push(99900110001);
     this.data.push(99900120012);
@@ -61,8 +86,8 @@ export class AppComponent {
     this.data.push(33378910003);
     this.data.push(33378920002);
 
-   
-
+  //  var policy = new Policy(19415, 'Urban', 'A', 104, '4', '1980-10-13', '2022-10-14', '12345678913', 1, '9600', 85, 100);
+  //   this.policyList.push(policy);
     this.pieChartOptions = {
       series: [20,50,30,50,25,45],
       chart: {
@@ -114,20 +139,7 @@ export class AppComponent {
       },
     }
     this.synchronizedChartOptions= {
-      series: [{
-        data: this.generateDayWiseTimeSeries(new Date("1 Oct 2022").getTime(),
-        20, {
-          min: 0,
-          
-        })
-      }],
-        chart: {
-        id: 'churn',
-        group: 'negative',
-        type: 'line',
-        height: 160
-      },
-      colors: ['#008FFB'],
+      
       yaxis: {
         tickAmount: 2,
         labels: {
@@ -161,7 +173,54 @@ export class AppComponent {
     xaxis: {
       type: "datetime"
     }
+    };
+    this.falseCasesOptions={
+      series: [
+        {
+          name: "falseCases",
+          data: this.generateDayWiseTimeSeries(
+            new Date("10 Oct 2022").getTime(),
+            10,
+            {
+              min: 10,
+              max: 100
+            }
+          )
+        }
+      ],
+      chart: {
+        id: 'falseData',
+        group: 'negative',
+        type: 'line',
+        height: 160
+      },
+      
+      colors: ['#022e5556'], 
     }
+    this.trueCasesOptions={
+      series: [
+        {
+          name: "trueCases",
+          data: this.generateDayWiseTimeSeries(
+            new Date("10 Oct 2022").getTime(),
+            10,
+            {
+              min: 10,
+              max: 100
+            }
+          )
+        }
+      ],
+      chart: {
+        id: 'trueData',
+        group: 'positive',
+        type: 'line',
+        height: 160
+      },
+      
+      colors: ['#2da115e3'],  
+    }
+    //this.updateSeries();
   }
 
   // public filterByCountry(s: string): number[]{
@@ -182,10 +241,20 @@ export class AppComponent {
         Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
       series.push([x, y]);
+     
       baseval += 86400000;
       i++;
     }
+    console.log("Series for sync chart is "+series);
     return series;
+  }
+
+  public updateSeries(){
+    this.synchronizedChartOptions.series.data = this.generateDayWiseTimeSeries(new Date("1 Oct 2022").getTime(),
+    1, {
+      min: 1,
+      max: 100,
+    });
   }
   
 }

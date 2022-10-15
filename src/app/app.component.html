@@ -295,8 +295,8 @@
 
 <div class="content" role="main">
 
-  <table width="100%">
-    <th width="33%">
+  <table width="100%" height="50%">
+    <td width="33%">
       <div id="pieChart">
         <apx-chart 
           [series]="pieChartOptions.series" 
@@ -304,8 +304,8 @@
           [labels]="pieChartOptions.labels"
           ></apx-chart> 
       </div>
-    </th>
-    <th width="33%">
+    </td>
+    <td width="33%">
       <div id="barChart">
         <apx-chart 
           [series]="barChartOptions.series" 
@@ -316,20 +316,41 @@
         ></apx-chart> 
       </div>
 
-    </th>
-    <th width="33%">
+    </td>
+    <td width="33%">
       <div id="syncChart">
-        <apx-chart 
-          [series]="synchronizedChartOptions.series" 
-          [chart]="synchronizedChartOptions.chart" 
-          [colors]="synchronizedChartOptions.colors" 
-          [yaxis]="synchronizedChartOptions.yaxis"
-          [xaxis]="synchronizedChartOptions.xaxis"
-          
+        <tr>
+          <apx-chart 
+        [series]="falseCasesOptions.series"
+        [chart]="falseCasesOptions.chart"
+        [colors]="falseCasesOptions.colors"
+        [yaxis]="synchronizedChartOptions.yaxis"
+        [dataLabels]="synchronizedChartOptions.dataLabels"
+        [markers]="synchronizedChartOptions.markers"
+        [stroke]="synchronizedChartOptions.stroke"
+        [grid]="synchronizedChartOptions.grid"
+        [xaxis]="synchronizedChartOptions.xaxis"
+        [tooltip]="synchronizedChartOptions.tooltip"
         ></apx-chart> 
+        </tr>
+        <tr>
+          <apx-chart 
+        [series]="trueCasesOptions.series"
+        [chart]="trueCasesOptions.chart"
+        [colors]="trueCasesOptions.colors"
+        [yaxis]="synchronizedChartOptions.yaxis"
+        [dataLabels]="synchronizedChartOptions.dataLabels"
+        [markers]="synchronizedChartOptions.markers"
+        [stroke]="synchronizedChartOptions.stroke"
+        [grid]="synchronizedChartOptions.grid"
+        [xaxis]="synchronizedChartOptions.xaxis"
+        [tooltip]="synchronizedChartOptions.tooltip"
+        ></apx-chart> 
+        </tr>
+        
       </div>
 
-    </th>
+    </td>
 
   </table>
   

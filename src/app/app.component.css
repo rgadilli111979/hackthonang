@@ -11,7 +11,7 @@
    border-style: solid;
 }
 .cell{
-    border:rgba(2, 46, 85, 0.89);
+    border:rgba(16, 85, 2, 0.89);
     border-style: dotted;
     text-align: center;
     font-size: large;

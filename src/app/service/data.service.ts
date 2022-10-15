@@ -10,6 +10,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { InsurerName } from '../model/insurer-name';
 import { Country } from '../model/countries.model';
+import { Policy } from '../model/policy';
 
 const baseUrl = 'http://localhost:1000/legacyCodeAnalyser/analyse';
 
@@ -24,11 +25,13 @@ const baseUrl = 'http://localhost:1000/legacyCodeAnalyser/analyse';
 
 //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
 
-const predictionurl = 'http://127.0.0.1:5000/churn';//?id=1
+const predictionurl = 'http://127.0.0.1:5000/churn?id=1';//?id=1
 
 const localDashboarCountriesDataUrl = 'http://localhost:8080/insurer/data/countries';
 
 const localDashboarInsurerDataUrl = 'http://localhost:8080/insurer/data/companies';
+
+const localDashboardPolicyDataUrl = 'http://localhost:8080/insurer/data/getPolicyDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -38,11 +41,15 @@ export class InsurerDetailService {
   constructor(private http: HttpClient, private router: Router) { }
   
   getListOfCountries():  Observable<Country[]>{
-    console.info('we are in ser countries dara');
+    console.info('we are in ser countries data');
     const headers = { 'content-type': 'application/json' }
     return this.http.get<Country[]>(localDashboarCountriesDataUrl, { 'headers': headers });
+  }
 
-
+  getListOfPolicies(): Observable<Policy[]>{
+    console.info("getting policies");
+    const headers = { 'content-type': 'application/json' }
+    return this.http.get<Policy[]>(localDashboardPolicyDataUrl, {'headers': headers});
   }
   
 }

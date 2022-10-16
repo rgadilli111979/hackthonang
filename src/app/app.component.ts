@@ -54,12 +54,14 @@ export class AppComponent {
   expInOneMonthPolicies!: Policy[];
   expInTwoMonthPolicies!: Policy[];
   expInThreeMonthPolicies!: Policy[];
-  barChartDataList: number[] = new Array(0,0,0,0,0,0);
+  barChartDataList: number[] = new Array(12,34,45,56);
   expiringPoliciesCount: number[] = new Array();
   systemId!: number;
   prediction!: boolean;
   pieChartKeys!: string[];
   pieChartValues!: any[];
+  barChartKeys!: string[];
+  barChartValues: number[]=new Array();
 
   countriesList!:Country[];
   constructor(private insurerDataSer: InsurerDetailService, private cd : ChangeDetectorRef){
@@ -81,50 +83,18 @@ export class AppComponent {
       
     })
 
-    // this.insurerDataSer.getExpiringPolicies(7).subscribe(res => {
-    //   var policies:Policy[] = res;
-    //   this.expInOneWeekPolicies = policies;
-    //   this.barChartDataList[0]=policies.length;
-    //   console.info(this.expInOneWeekPolicies);
-    //   console.info("count of policies exp in 7 days")
-    //   console.info(this.barChartDataList[0]);
-    // })
+    this.insurerDataSer.getExpiringSoonCountInDateRange().subscribe(res =>{
+      this.barChartKeys = Object.keys(res);
 
-    // this.insurerDataSer.getExpiringPolicies(14).subscribe(res => {
-    //   var policies:Policy[] = res;
-    //   this.expInTwoWeekPolicies = policies;
-    //   this.barChartDataList[1]=policies.length;
-    //   console.info(this.expInTwoWeekPolicies);
-    // })
-
-    // this.insurerDataSer.getExpiringPolicies(21).subscribe(res => {
-    //   var policies:Policy[] = res;
-    //   this.expInThreeWeekPolicies = policies;
-    //  this.barChartDataList[2]=policies.length;
-    //   console.info(this.expInThreeWeekPolicies);
-    // })
-
-    // this.insurerDataSer.getExpiringPolicies(30).subscribe(res => {
-    //   var policies:Policy[] = res;
-    //   this.expInOneMonthPolicies = policies;
-    //   this.barChartDataList[3]=policies.length;
-    //   console.info(this.expInOneMonthPolicies);
-    // })
-
-    // this.insurerDataSer.getExpiringPolicies(60).subscribe(res => {
-    //   var policies:Policy[] = res;
-    //   this.expInTwoMonthPolicies = policies;
-    //   this.barChartDataList[4]=policies.length;
-    //   console.info(this.expInTwoMonthPolicies);
-    // })
-
-    // this.insurerDataSer.getExpiringPolicies(90).subscribe(res => {
-    //   var policies:Policy[] = res;
-    //   this.expInThreeMonthPolicies = policies;
-    //   this.barChartDataList[5]=policies.length;
-    //   console.info(this.expInThreeMonthPolicies);
-    //   this.updateSeries();
-    // })
+      console.info('#######this.barChartKeys', Object.keys(res));
+      var values: number[] = Object.values(res);
+      for(let i=0; i<values.length; i++){
+        this.barChartValues[i] = values[i];
+      }
+      // this.barChartValues = Object.values(res);
+      console.info('#########this.barChartValues', this.barChartValues);
+      this.updateBarSeries();
+    })
 
     this.insurerDataSer.getListOfPolicies().subscribe(res => {
       this.policyList = res;
@@ -133,16 +103,17 @@ export class AppComponent {
       console.log("PieChart Data: "+res);
       this.pieChartKeys = Object.keys(res);
       this.pieChartValues = Object.values(res);
+      this.updatePieSeries();
     })
 
-   var bool =0;
-   if(bool==0){
-    Swal.fire('error!', 'Oops!', 'error');
-    bool=1;
-   }
-    if(bool==1){
-      Swal.fire('success!', 'Hey There!', 'success');
-    }
+  //  var bool =0;
+  //  if(bool==0){
+  //   Swal.fire('error!', 'Oops!', 'error');
+  //   bool=1;
+  //  }
+  //   if(bool==1){
+  //     Swal.fire('success!', 'Hey There!', 'success');
+  //   }
     
 
     this.data.push(99900110001);
@@ -153,7 +124,7 @@ export class AppComponent {
     this.data.push(22212310004);
     this.data.push(33378910003);
     this.data.push(33378920002);
-
+    
     
   //  var policy = new Policy(19415, 'Urban', 'A', 104, '4', '1980-10-13', '2022-10-14', '12345678913', 1, '9600', 85, 100);
   //   this.policyList.push(policy);
@@ -195,12 +166,11 @@ export class AppComponent {
       },
       xaxis: {
         categories: [
-          "One Week",
-          "Two Week",
-          "Three Week",
-          "One Month",
-          "Two Month",
-          "Three Month"
+          "1 Week",
+          "1 Month",
+          "2 Months",
+          "3 Months"
+          
         ],
         labels:{
           show: false
@@ -333,26 +303,22 @@ export class AppComponent {
     })
   }
 
-  public updateSeries(){
-    // this.synchronizedChartOptions.series.data = this.generateDayWiseTimeSeries(new Date("1 Oct 2022").getTime(),
-    // 1, {
-    //   min: 1,
-    //   max: 100,
-    // });
+  public updateBarSeries(){
     
-      // this.barChartDataList[0]=this.expInOneWeekPolicies.length;
-      // this.barChartDataList[1]=this.expInTwoWeekPolicies.length;
-      // this.barChartDataList[2]=this.expInThreeWeekPolicies.length;
-      // this.barChartDataList[3]=this.expInOneMonthPolicies.length;
-      // this.barChartDataList[4]=this.expInTwoMonthPolicies.length;
-      // this.barChartDataList[5]=this.expInThreeMonthPolicies.length;
     
     console.info("updating chart data");
-    this.barChartOptions.series.data = this.barChartDataList;
-    console.log(this.barChartOptions.series.data);
+    //this.barChartOptions.series.labels = this.barChartKeys;
+    console.log("####this.barChartValues : ", this.barChartValues);
+     this.barChartOptions.series.data = this.barChartValues;
+     //this.barChartOptions.data = this.barChartValues;
+     console.info("#######this.barChartOptions.series.data",this.barChartOptions.series.data); 
+     //this.barChartOptions.data = this.barChartValues;
+    //console.log("BarChartData: "+this.barChartOptions.series.data + this.barChartOptions.labels);
 
+  }
 
-    this.pieChartOptions.labels = this.pieChartKeys;
+  public updatePieSeries(){
+   this.pieChartOptions.labels = this.pieChartKeys;
     this.pieChartOptions.series = this.pieChartValues;
     
   }

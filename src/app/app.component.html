@@ -296,7 +296,7 @@
 <div class="content" role="main">
 
   <table width="100%">
-    <td width="45%">
+    <td width="50%">
       <div id="pieChart">
         <apx-chart 
           [series]="pieChartOptions.series" 
@@ -305,12 +305,13 @@
           ></apx-chart> 
       </div>
     </td>
-    <td width="45%">
+    <td width="50%">
       <div id="barChart">
         <apx-chart 
           [series]="barChartOptions.series" 
           [chart]="barChartOptions.chart" 
-          [dataLabels]="barChartOptions.dataLabels"
+          
+          [dataLabels]="barChartOptions.labels"
           [plotOptions]="barChartOptions.plotOptions" 
           [xaxis]="barChartOptions.xaxis"
         ></apx-chart> 

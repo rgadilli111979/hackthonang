@@ -37,6 +37,7 @@ const localDashboardExpiringPoliciesURL ='http://localhost:8080/insurer/data/exp
 
 const localDashboardPieChartDataURL = 'http://localhost:8080/insurer/data/getPieChartInfoForInsuranceType';
 
+const localDashboardBarChartDataURL = 'http://localhost:8080/insurer/data/expiringSoonCountInDateRange';
 @Injectable({
   providedIn: 'root'
 })
@@ -70,5 +71,9 @@ export class InsurerDetailService {
   getPieChartInfoForInsuranceType(): Observable<any>{
     const headers = { 'content-type': 'application/json' }
     return this.http.get<any>(localDashboardPieChartDataURL, {'headers': headers});
+  }
+  getExpiringSoonCountInDateRange(): Observable<any>{
+    const headers = { 'content-type': 'application/json' }
+    return this.http.get<any>(localDashboardBarChartDataURL, {'headers': headers});
   }
 }

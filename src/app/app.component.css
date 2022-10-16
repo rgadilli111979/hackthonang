@@ -1,7 +1,12 @@
 .header{
     font-family: Lato;
-    font-size: 20px;
+    font-size: 16px;
     margin: 350px;
+}
+
+.h3{
+    color: blueviolet;
+    font-weight: bold;
 }
 .table{
     width:100%;;

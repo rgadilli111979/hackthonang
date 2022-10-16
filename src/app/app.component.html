@@ -296,8 +296,13 @@
 <div class="content" role="main">
 
   <table width="100%">
+    
+      
+   
     <td width="50%">
+      <h3 class="h3" align="center">Policies Count For Each Type</h3>
       <div id="pieChart">
+       
         <apx-chart 
           [series]="pieChartOptions.series" 
           [chart]="pieChartOptions.chart" 
@@ -305,7 +310,9 @@
           ></apx-chart> 
       </div>
     </td>
+ 
     <td width="50%">
+      <h3 class="h3" align="center">Policies Expiring In Time Frame</h3>
       <div id="barChart">
         <apx-chart 
           [series]="barChartOptions.series" 

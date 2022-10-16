@@ -25,7 +25,7 @@ const baseUrl = 'http://localhost:1000/legacyCodeAnalyser/analyse';
 
 //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
 
-const predictionurl = 'http://127.0.0.1:5000/churn?id=84844';//?id=1
+const predictionurl = 'http://127.0.0.1:5000/churn?id=';
 
 const localDashboarCountriesDataUrl = 'http://localhost:8080/insurer/data/countries';
 
@@ -66,7 +66,7 @@ export class InsurerDetailService {
   getPrediction(systemId: number): Observable<any>{
     console.info("getting prediction");
     const headers = { 'content-type': 'application/json' }
-    return this.http.get<any>(predictionurl, {'headers': headers});
+    return this.http.get<any>(predictionurl+systemId, {'headers': headers});
   }
   getPieChartInfoForInsuranceType(): Observable<any>{
     const headers = { 'content-type': 'application/json' }

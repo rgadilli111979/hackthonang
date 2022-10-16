@@ -18,6 +18,7 @@ import { InsurerDetailService } from './service/data.service';
 import { Country } from './model/countries.model';
 import Swal from 'sweetalert2';
 import { Policy } from './model/policy';
+import { ChurnData } from './model/churn-data';
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
@@ -45,7 +46,13 @@ export class AppComponent {
   public trueCasesOptions: Partial<ChartOptions> | any;
   countries: string[] = new Array();
   insurers: string[] = new Array('ACE Europe', 'Aditya Birla Sun Life Insurance', 'CAA Insurance', 'Industrial Alliance', 'PC Insurance');
-  insuranceTypes: string[] = new Array('Home Insurance', 'Life Insurance', 'Health Insurance','Vehicel Insurance')
+  insuranceTypes: string[] = new Array('Business Insurance',
+   'Compensation Insurance', 'Health Insurance','Home Insurance',
+   'Income Protection Insurance',
+   'Life Insurance','Pet Insurance','Travel Insurance',
+   'Vehicel Insurance')
+    
+    
   insurerNameList!: InsurerName[];
   policyList!: Policy[];
   expInOneWeekPolicies!: Policy[];
@@ -56,8 +63,17 @@ export class AppComponent {
   expInThreeMonthPolicies!: Policy[];
   barChartDataList: number[] = new Array(12,34,45,56);
   expiringPoliciesCount: number[] = new Array();
+
   systemId!: number;
-  prediction!: boolean;
+  prediction!: string;
+  setClickedRow: Function;
+  selectedRow!: number;
+  churnData!: ChurnData
+
+
+
+ 
+ 
   pieChartKeys!: string[];
   pieChartValues!: any[];
   barChartKeys!: string[];
@@ -66,6 +82,8 @@ export class AppComponent {
   countriesList!:Country[];
   constructor(private insurerDataSer: InsurerDetailService, private cd : ChangeDetectorRef){
    
+
+    
     this.insurerDataSer.getListOfCountries ().subscribe(res => {
       this.countriesList = res;
       console.info(this.countriesList);
@@ -178,6 +196,14 @@ export class AppComponent {
       },
       
     }
+    sessionStorage.clear();
+    this.setClickedRow = function (index: number, policyNum : string) {
+     // alert(index);
+     this.selectedRow = index;
+      
+      this.getPrediction(index,policyNum);
+    }
+
   //   this.synchronizedChartOptions= {
       
   //     yaxis: {
@@ -292,17 +318,36 @@ export class AppComponent {
     return series;
   }
 
-  public getPrediction(policyNumber: string): any{
+  public getPrediction(systemId: number, policyId: string): any{
     
-    this.policyList.filter( res => {
-      this.systemId = res.systemId
-    })
-    this.insurerDataSer.getPrediction(this.systemId).subscribe(res =>{
-      this.prediction =res;
-      console.log("prediction for policy- "+policyNumber+" is: "+this.prediction);
-    })
+    //alert('we are in getPrediction ' +systemId);
+    this.insurerDataSer.getPrediction(systemId).subscribe(res => {
+      var val= Object(res);
+      //alert(val[0]);
+     this.churnData = res[0];
+     
+
+     //console.info('$$$$$$$$$$$$$$$$$$ churnData.prediction  ',res.prediction);
+      this.prediction =this.churnData.prediction;
+     
+      console.log("prediction for policy- is: "+res);
+     
+      if(this.prediction == 'True'){
+        Swal.fire({
+          title: 'High Chances Of Renewal Of Policy - '+ policyId,
+          iconHtml: "<img src='/assets/Up-Green.png'  height=100 width=100 >"})
+      }
+      else{
+        Swal.fire({
+          title: 'Low Chances Of Renewal Of Policy - '+ policyId,
+          iconHtml: "<img src='/assets/Down-Red.png' height=100 width=100 >"})
+      }
+      
+    });
   }
 
+
+  
   public updateBarSeries(){
     
     

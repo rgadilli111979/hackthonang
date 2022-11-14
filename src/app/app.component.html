@@ -286,12 +286,9 @@
 </style>
 
 <!-- Toolbar -->
-<div class="toolbar" role="banner">
-
-  <span class="header">Welcome & Predict Whether Your Insuree Going to Stay With You</span>
-  <div class="spacer"></div>
-
-</div>
+<div>
+    <h3 align="center">Policy Renewal Prediction</h3> 
+    </div>
 
 <div class="content" role="main">
 
@@ -314,14 +311,13 @@
     <td width="50%">
       <h3 class="h3" align="center">Policies Expiring In Time Frame</h3>
       <div id="barChart">
-        <apx-chart 
-          [series]="barChartOptions.series" 
+        <apx-chart [series]="barChartOptions.series" 
           [chart]="barChartOptions.chart" 
           
           [dataLabels]="barChartOptions.labels"
           [plotOptions]="barChartOptions.plotOptions" 
-          [xaxis]="barChartOptions.xaxis"
-        ></apx-chart> 
+          [xaxis]="barChartOptions.xaxis">
+        </apx-chart> 
       </div>
 
     </td>

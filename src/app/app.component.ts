@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs';
 import { ApexNonAxisChartSeries,
@@ -33,7 +33,8 @@ export type ChartOptions = {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent{
+  @ViewChild("chart")
   title = 'Prediction';
   private _jsonURL = 'assets/Insurer_Name.json';
   data: number[] = new Array();
@@ -61,7 +62,6 @@ export class AppComponent {
   expInOneMonthPolicies!: Policy[];
   expInTwoMonthPolicies!: Policy[];
   expInThreeMonthPolicies!: Policy[];
-  barChartDataList: number[] = new Array(12,34,45,56);
   expiringPoliciesCount: number[] = new Array();
 
   systemId!: number;
@@ -77,8 +77,8 @@ export class AppComponent {
   pieChartKeys!: string[];
   pieChartValues!: any[];
   barChartKeys!: string[];
-  barChartValues: number[]=new Array();
-
+  barChartValues!: number[];
+  barChartData!: Map<string, any>;
   countriesList!:Country[];
   constructor(private insurerDataSer: InsurerDetailService, private cd : ChangeDetectorRef){
    
@@ -102,15 +102,25 @@ export class AppComponent {
     })
 
     this.insurerDataSer.getExpiringSoonCountInDateRange().subscribe(res =>{
-      this.barChartKeys = Object.keys(res);
-
+     
       console.info('#######this.barChartKeys', Object.keys(res));
-      var values: number[] = Object.values(res);
-      for(let i=0; i<values.length; i++){
-        this.barChartValues[i] = values[i];
-      }
+      // var barVals: number[] = Object.values(res);
+      // for(let i =0; i<barVals.length; i++){
+      //   this.barChartValues[i] = barVals[i];
+      // }
+      this.barChartKeys = Object.keys(res);
+      this.barChartValues = Object.values(res);
+
+      var bKeys = Object.keys(res);
+      var bValues = Object.values(res);
+      // for(let i=0; i<bKeys.length; i++){
+      //   this.barChartData.set(bKeys[i], bValues[i]);
+      // }
+      //this.barChartOptions.series.data = Object.values(res);
+     //this.barChartValues = barVals;
       // this.barChartValues = Object.values(res);
       console.info('#########this.barChartValues', this.barChartValues);
+     // console.info('#########this.barChartOptions.series.data', this.barChartOptions.series.data);
       this.updateBarSeries();
     })
 
@@ -167,7 +177,7 @@ export class AppComponent {
     }
     this.barChartOptions= {
       series: [{
-        data: this.barChartDataList
+        data: [10,10,10,10]
       }],
       chart:{
         height: 350,
@@ -204,90 +214,6 @@ export class AppComponent {
       this.getPrediction(index,policyNum);
     }
 
-  //   this.synchronizedChartOptions= {
-      
-  //     yaxis: {
-  //       tickAmount: 2,
-  //       labels: {
-  //         minWidth: 40
-  //       }
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     stroke: {
-  //       curve: "straight"
-  //     },
-  //     toolbar: {
-  //       tools: {
-  //         selection: false
-  //       }
-  //     },
-  //     marker: {
-  //       show: false
-  //     },
-  //     y: {
-  //       title: {
-  //         formatter: function() {
-  //           return "";
-  //         }
-  //       }
-  //     },
-  //  grid: {
-  //     clipMarkers: false
-  //   },
-  //   xaxis: {
-  //     type: "datetime"
-  //   }
-  //   };
-  //   this.falseCasesOptions={
-  //     series: [
-  //       {
-  //         name: "falseCases",
-  //         data: this.generateDayWiseTimeSeries(
-  //           new Date("10 Oct 2022").getTime(),
-  //           10,
-  //           {
-  //             min: 10,
-  //             max: 100
-  //           }
-  //         )
-  //       }
-  //     ],
-  //     chart: {
-  //       id: 'falseData',
-  //       group: 'negative',
-  //       type: 'line',
-  //       height: 160
-  //     },
-      
-  //     colors: ['#022e5556'], 
-  //   }
-  //   this.trueCasesOptions={
-  //     series: [
-  //       {
-  //         name: "trueCases",
-  //         data: this.generateDayWiseTimeSeries(
-  //           new Date("10 Oct 2022").getTime(),
-  //           10,
-  //           {
-  //             min: 10,
-  //             max: 100
-  //           }
-  //         )
-  //       }
-  //     ],
-  //     chart: {
-  //       id: 'trueData',
-  //       group: 'positive',
-  //       type: 'line',
-  //       height: 160
-  //     },
-      
-  //     colors: ['#2da115e3'],  
-  //   }
- 
-  //this.cd.detectChanges();
   
   }
 
@@ -350,20 +276,23 @@ export class AppComponent {
   
   public updateBarSeries(){
     
-    
-    console.info("updating chart data");
+   console.info("updating chart data");
     //this.barChartOptions.series.labels = this.barChartKeys;
     console.log("####this.barChartValues : ", this.barChartValues);
-     this.barChartOptions.series.data = this.barChartValues;
+    // this.barChartOptions.series.data = this.barChartValues;
      //this.barChartOptions.data = this.barChartValues;
+     this.barChartOptions.series = [{name: this.barChartKeys,data: this.barChartValues}];
+     console.info("#######this.barChartOptions.series.name",this.barChartOptions.series.name); 
      console.info("#######this.barChartOptions.series.data",this.barChartOptions.series.data); 
+    //this.barChartOptions.series = this.barChartData;
+     
      //this.barChartOptions.data = this.barChartValues;
     //console.log("BarChartData: "+this.barChartOptions.series.data + this.barChartOptions.labels);
-
+    
   }
 
   public updatePieSeries(){
-   this.pieChartOptions.labels = this.pieChartKeys;
+    this.pieChartOptions.labels = this.pieChartKeys;
     this.pieChartOptions.series = this.pieChartValues;
     
   }
